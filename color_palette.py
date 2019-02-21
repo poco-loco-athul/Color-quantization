@@ -4,6 +4,7 @@ from sklearn.cluster import KMeans
 
 # opens image
 im = Image.open("example.jpg")
+im.show()
 
 # get pixel values from image
 data = np.array(im.getdata())
@@ -14,9 +15,14 @@ centers = kmeans.cluster_centers_.astype(int)
 
 
 # Showing output
+width = 128
+height =128
+palette = Image.new('RGB', (width*len(centers), height))
 for i in range(len(centers)):
-    out = Image.new("RGB", (128, 128), tuple(centers[i]))
-    out.show()
+    col = Image.new("RGB", (width, height), tuple(centers[i]))
+    palette.paste(col, (width*i,0))
+palette.show()
+
 
 
 
