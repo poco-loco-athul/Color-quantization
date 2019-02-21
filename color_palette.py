@@ -1,16 +1,21 @@
 from PIL import Image
 import numpy as np
 from sklearn.cluster import KMeans
+import sys
 
-# opens image
-im = Image.open("example.jpg")
+
+if len(sys.argv) == 2:
+    im = Image.open(sys.argv[1])
+else:    
+    # opens image
+    im = Image.open("example.jpg")
 im.show()
 
 # get pixel values from image
 data = np.array(im.getdata())
 
 # Kmeans learning
-kmeans = KMeans(n_clusters=5, random_state=0).fit(data)
+kmeans = KMeans(n_clusters=5).fit(data)
 centers = kmeans.cluster_centers_.astype(int)
 
 
