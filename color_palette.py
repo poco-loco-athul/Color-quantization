@@ -9,15 +9,14 @@ im = Image.open("example.jpg")
 data = np.array(im.getdata())
 
 # Kmeans learning
-kmeans = KMeans(n_clusters=2, random_state=0).fit(data)
+kmeans = KMeans(n_clusters=5, random_state=0).fit(data)
 centers = kmeans.cluster_centers_.astype(int)
 
 
 # Showing output
-
-a = tuple(centers[0])
-out = Image.new("RGB", (128, 128), a)
-out.show()
+for i in range(len(centers)):
+    out = Image.new("RGB", (128, 128), tuple(centers[i]))
+    out.show()
 
 
 
