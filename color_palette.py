@@ -1,5 +1,5 @@
-import sys
 import copy
+import argparse as ap
 import numpy as np
 from sklearn.cluster import KMeans
 from PIL import Image
@@ -7,12 +7,27 @@ from PIL import Image
 
 def open_img():
     "Returns image and it's data"
-    if len(sys.argv) == 2:
-        img = Image.open(sys.argv[1])
-    else:
-        img = Image.open("example.jpg")
+    parser = ap.ArgumentParser(description="""
+    Quantizes colors in image.
+    Produces a modified image using these colors.""")
+    
+    parser.add_argument('-i','--image', default="example.jpg",
+                        action='store', nargs='?',
+                        help='file-path of image (default: example.jpg)')
+
+    parser.add_argument('-n', '--n_colors', default=5,
+                        type=int, action='store', nargs='?',
+                        help="""
+                        Number of colors to be quantized (default: 5)
+                        (warning: choose number carefully. 
+                        It may take while to run the program.)
+                        """)
+
+    args = parser.parse_args()
+    img = Image.open(args.image)
     dat = np.array(img.getdata())
-    return img, dat
+    n = args.n_colors
+    return img, dat, n
 
 
 def quantize(dat, n_colors):
@@ -58,9 +73,9 @@ def mod_img(dat, cntrs):
 
 
 if __name__ == "__main__":
-    picture, data = open_img()
+    picture, data, n_col = open_img()
     picture.show()
-    centers = quantize(data, 5)
+    centers = quantize(data, n_col)
     palette = palette_img(centers)
     palette.show()
     mod_picture = mod_img(data, centers)
