@@ -4,55 +4,64 @@ import numpy as np
 from sklearn.cluster import KMeans
 from PIL import Image
 
-# open image
 
-# if len(sys.argv) == 2:
-#     im = Image.open(sys.argv[1])
-# else:
-#     # opens image
-#     picture = image.open("example.jpg")
-picture = Image.open("example.jpg")
-
-
-# get image data
-data = np.array(picture.getdata())
-modified_data = copy.deepcopy(data)
+def open_img():
+    "Returns image and it's data"
+    if len(sys.argv) == 2:
+        img = Image.open(sys.argv[1])
+    else:
+        img = Image.open("example.jpg")
+    dat = np.array(img.getdata())
+    return img, dat
 
 
-# Kmeans learning
-kmeans = KMeans(n_clusters=5, max_iter=1).fit(data)
-centers = kmeans.cluster_centers_.astype(int)
+def quantize(dat, n_colors):
+    "Applies KMeans to image-data and returns most used colors"
+    model = KMeans(n_clusters=n_colors).fit(dat)
+    cntrs = model.cluster_centers_.astype(int)
+    return cntrs
 
-def color_difference(col1, col2):
+
+def color_diff(col1, col2):
     "Returns Euclidean distance between 2colors in RGB color space"
     return ((col1[0] - col2[0])**2 +
             (col1[1] - col2[1])**2 +
             (col1[2] - col2[2])**2)**0.5
 
 
-# Image of color palette
-width, height = 128, 128
-palette = Image.new('RGB', (width*len(centers), height))
-for i, _ in enumerate(centers):
-    col = Image.new("RGB", (width, height), tuple(centers[i]))
-    palette.paste(col, (width*i, 0))
+def palette_img(cntrs):
+    "Returns image of color palette"
+    width, height = 128, 128
+    palette = Image.new('RGB', (width*len(cntrs), height))
+    for i, _ in enumerate(cntrs):
+        col = Image.new("RGB", (width, height), tuple(cntrs[i]))
+        palette.paste(col, (width*i, 0))
+    return palette
 
 
-# Makes image-data in range of color palette
-for pix, _ in enumerate(modified_data):
-    col_dic = {}
-    for col in centers:
-        col_dic[tuple(col)] = color_difference(modified_data[pix], col)
-    for key, value in col_dic.items():
-        if min(col_dic.values()) == value:
-            modified_data[pix] = key
-
-modified_picture = Image.new('RGB', picture.size)
-m_data = list(tuple(pixel) for pixel in modified_data)
-modified_picture.putdata(m_data)
+def mod_img(dat, cntrs):
+    "Returns image in range of color palette"
+    modified_data = copy.deepcopy(dat)
+    for pix, _ in enumerate(dat):
+        col_dic = {}
+        for col in cntrs:
+            col_dic[tuple(col)] = color_diff(dat[pix], col)
+        # Finds min of col_dic and replaces
+        for key, value in col_dic.items():
+            if min(col_dic.values()) == value:
+                modified_data[pix] = key
+    # Creates image
+    m_data = list(tuple(pixel) for pixel in modified_data)
+    m_pic = Image.new('RGB', picture.size)
+    m_pic.putdata(m_data)
+    return m_pic
 
 
 if __name__ == "__main__":
+    picture, data = open_img()
     picture.show()
+    centers = quantize(data, 5)
+    palette = palette_img(centers)
     palette.show()
-    modified_picture.show()
+    mod_picture = mod_img(data, centers)
+    mod_picture.show()
