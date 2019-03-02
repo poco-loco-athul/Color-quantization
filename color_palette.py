@@ -38,7 +38,10 @@ def quantize(dat, n_colors):
 
 
 def color_diff(col1, col2):
-    "Returns Euclidean distance between 2colors in RGB color space"
+    """Returns Euclidean distance between 2colors in RGB color space
+    >>> color_diff( [200,0,0], [200,3,4])
+    5.0
+    """
     return ((col1[0] - col2[0])**2 +
             (col1[1] - col2[1])**2 +
             (col1[2] - col2[2])**2)**0.5
@@ -71,8 +74,7 @@ def mod_img(dat, cntrs):
     m_pic.putdata(m_data)
     return m_pic
 
-
-if __name__ == "__main__":
+def main():
     picture, data, n_col = open_img()
     picture.show()
     centers = quantize(data, n_col)
@@ -80,3 +82,7 @@ if __name__ == "__main__":
     palette.show()
     mod_picture = mod_img(data, centers)
     mod_picture.show()
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
