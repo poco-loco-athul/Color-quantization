@@ -12,7 +12,7 @@ def open_img():
     Produces a modified image using these colors.""")
     
     parser.add_argument('-i','--image', default="example.jpg",
-                        action='store', nargs='?',
+                        action='store', nargs='?', metavar='imagepath',
                         help='file-path of image (default: example.jpg)')
 
     parser.add_argument('-n', '--n_colors', default=5,
@@ -57,7 +57,7 @@ def palette_img(cntrs):
     return palette
 
 
-def mod_img(dat, cntrs):
+def mod_img(dat, cntrs, pic):
     "Returns image in range of color palette"
     modified_data = copy.deepcopy(dat)
     for pix, _ in enumerate(dat):
@@ -70,7 +70,7 @@ def mod_img(dat, cntrs):
                 modified_data[pix] = key
     # Creates image
     m_data = list(tuple(pixel) for pixel in modified_data)
-    m_pic = Image.new('RGB', picture.size)
+    m_pic = Image.new('RGB', pic.size)
     m_pic.putdata(m_data)
     return m_pic
 
@@ -80,7 +80,7 @@ def main():
     centers = quantize(data, n_col)
     palette = palette_img(centers)
     palette.show()
-    mod_picture = mod_img(data, centers)
+    mod_picture = mod_img(data, centers, picture)
     mod_picture.show()
 
 if __name__ == "__main__":
