@@ -84,5 +84,4 @@ def main():
     mod_picture.show()
 
 if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
+    main()
