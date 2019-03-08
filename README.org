@@ -1,0 +1,41 @@
+
+* Introduction
+Color quantization is a process of reducing the number of distinct colors
+used in an image. The most common techniques reduce the problem of
+color quantization into a clustering problem of points where each
+point represents the color of a pixel. This clustering can be performed
+through the k-means algorithm.
+
+* Background
+This project is break downed to 4 main parts as follows:
+- Extract pixel values for a given image.
+- Get color palette using k-means in pixel values.
+- Create a small image of the palette.
+- Create a compressed image using the palette.
+
+Read more about the project in the [[https://students.thelycaeum.in/blog05/][blog]].
+
+* Usage
+Requires python3.x 
+
+#+BEGIN_SRC
+usage: color_palette.py [-h] [-i [imagepath]] [-n [N_COLORS]]
+
+Quantizes colors in the image. Produces a modified image using these colors.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i [imagepath], --image [imagepath]
+                        file-path of image (default: example.jpg)
+  -n [N_COLORS], --n_colors [N_COLORS]
+                        Number of colors to be quantized (default: 5)
+                        (warning: choose number carefully. It may take time
+                        to run the program.)
+
+#+END_SRC
+
+* Requirements
+Check `requirements.txt` for dependencies
+  - install them with `pip install -r requirements.txt`
+  - to add more dependencies, use pip and: `pip freeze > requirements.txt`
+
