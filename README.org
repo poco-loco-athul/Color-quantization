@@ -21,17 +21,17 @@ Requires python3.x
 #+BEGIN_SRC
 usage: color_palette.py [-h] [-i [imagepath]] [-n [N_COLORS]]
 
-Quantizes colors in the image. Produces a modified image using these colors.
+Quantizes colors in image. Produces a modified image using these colors.
+
+positional arguments:
+  imagepath             file-path of image
 
 optional arguments:
   -h, --help            show this help message and exit
-  -i [imagepath], --image [imagepath]
-                        file-path of image (default: example.jpg)
   -n [N_COLORS], --n_colors [N_COLORS]
                         Number of colors to be quantized (default: 5)
-                        (warning: choose number carefully. It may take time
+                        (warning: choose number carefully. It may take while
                         to run the program.)
-
 #+END_SRC
 
 * Requirements
