@@ -11,9 +11,9 @@ def open_img():
     Quantizes colors in image.
     Produces a modified image using these colors.""")
     
-    parser.add_argument('-i','--image', default="example.jpg",
-                        action='store', nargs='?', metavar='imagepath',
-                        help='file-path of image (default: example.jpg)')
+    parser.add_argument('image', action='store',
+                        metavar='imagepath',
+                        help='file-path of image')
 
     parser.add_argument('-n', '--n_colors', default=5,
                         type=int, action='store', nargs='?',
